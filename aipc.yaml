@@ -1,0 +1,62 @@
+ai: NLP
+domain: PA
+usages: ./docs/usage.md
+metadata:
+  name: Audio Speech Recognition Model Fine Tuner
+  description: >
+    A lightweight framework for fine-tuning of automated speech recognition models.
+  kind: product-template
+  ai: Audio
+  domain: PA
+  license: Apache License 2.0
+usage:
+  target_users:
+    - generic
+  applications:
+    - generic
+  documentation_links:
+    - usage: ./docs/usage.md
+howto:
+  - title: prepare data
+    ref: ./docs/howto/data.md
+  - title: Train the model within AIxPA platform
+    ref: ./docs/howto/train.md
+  - title: expose the model as a service
+    ref: ./docs/howto/expose.md
+datasets:
+  - id: llmpa
+    kind: artifact
+    name: audio-dataset
+    description: Preprocessed audio dataset for ASR model fine-tuning
+models:
+  - id: audiomodel
+    kind: huggingface
+    name: audio-speech-recognition-fine-tuned 
+operations:
+  - id: train-audio-model
+    name: Train the automated speech recognition model
+    kind: job
+    task: training
+    implementation:
+      framework: aixpa
+      spec:
+        kind: python 
+        code_src: "git+https://github.com/tn-aixpa/asr-fine-tuning" 
+        handler: "src.fine_tuning_seq2seq:train_and_log_model"
+        python_version: PYTHON3_10
+        requirements: "datasets[audio]==3.6.0", "transformers==4.52.0", "torch==2.8.0", "accelerate==1.10.1", "evaluate==0.4.5", "jiwer==4.0.0"
+    outputs:
+      - audiomodel
+  - id: create-dataset
+    name: Preprocess the audio dataset
+    kind: job
+    task: processing
+    implementation:
+      framework: aixpa
+      spec:
+        code_src: "git+https://github.com/tn-aixpa/asr-fine-tuning" 
+        handler: "src.fine_tuning_seq2seq:preprocess_dataset"
+        python_version: PYTHON3_10
+        requirements: "datasets[audio]==3.6.0", "transformers==4.52.0", "torch==2.8.0", "accelerate==1.10.1", "evaluate==0.4.5", "jiwer==4.0.0"
+    outputs:
+      -  audio-dataset
