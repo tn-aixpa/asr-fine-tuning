@@ -599,10 +599,10 @@ def train_and_log_model(
         
     """
 
-    output_dir = '/shared/data/model'
-    cache_dir = '/shared/data/cache'
-    # final_dir = '/shared/data/final'   
-    # data_dir = '/shared/data/dataset'
+    output_dir = '/local_data/model'
+    cache_dir = '/local_data/cache'
+    # final_dir = '/local_data/final'   
+    # data_dir = '/local_data/dataset'
 
     if artifact_name is not None:
         project.get_artifact(artifact_name).download(cache_dir)
@@ -703,10 +703,10 @@ def preprocess_dataset(
         max_eval_samples (int): Number of entries to consider for evaluation (for debugging)
     """
 
-    output_dir = '/shared/data/model'
-    cache_dir = '/shared/data/cache'
-    # final_dir = '/shared/data/weights/ground'   
-    # data_dir = '/shared/data/dataset'
+    output_dir = '/local_data/model'
+    cache_dir = '/local_data/cache'
+    # final_dir = '/local_data/weights/ground'   
+    # data_dir = '/local_data/dataset'
 
     hf_token = None
     try:    
